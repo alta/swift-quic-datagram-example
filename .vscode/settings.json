@@ -11,7 +11,9 @@
 
 	// Files
 	"files.exclude": {
+		"**/.build": true,
 		"**/.git": true,
+		"**/.swiftpm": true,
 		"**/build": true,
 		"**/vendor": true
 	},
@@ -91,8 +93,8 @@
 	// Swift
 	"[swift]": {
 		"editor.detectIndentation": true,
-		"editor.insertSpaces": true,
-		"editor.tabSize": 4
+		"editor.insertSpaces": false,
+		"editor.tabSize": 8
 	},
 
 	// YAML

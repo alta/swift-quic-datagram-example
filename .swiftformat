@@ -1,0 +1,3 @@
+--exclude **/.git
+--exclude vendor
+--indent tab
