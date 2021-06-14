@@ -58,9 +58,11 @@ class EchoTests: XCTestCase {
 		let parameters = NWParameters(quic: options)
 		let group = NWConnectionGroup(with: descriptor, using: parameters)
 
+        let payloadReceived = expectation(description: "payload received")
 		group.setReceiveHandler { _, content, _ in
 			if let content = content {
 				print("Received datagram: \(content)")
+                payloadReceived.fulfill()
 			}
 		}
 
@@ -105,6 +107,6 @@ class EchoTests: XCTestCase {
 
 		wait(for: [payloadSent], timeout: 1)
 
-		sleep(1)
+        wait(for: [payloadReceived], timeout: 1)
 	}
 }
