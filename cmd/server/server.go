@@ -41,7 +41,7 @@ func serverMain(addr string) error {
 		return err
 	}
 
-	log.Printf("Server: listening at %s", addr)
+	log.Printf("Server listening at: %s", addr)
 
 	for {
 		sess, err := listener.Accept(context.Background())
@@ -49,6 +49,7 @@ func serverMain(addr string) error {
 			return err
 		}
 		go func(sess quic.Session) {
+			log.Printf("QUIC session started: %s", sess.RemoteAddr().String())
 			for {
 				buf, err := sess.ReceiveMessage()
 				if err != nil {
