@@ -58,27 +58,27 @@ class EchoTests: XCTestCase {
 		let parameters = NWParameters(quic: options)
 		let group = NWConnectionGroup(with: descriptor, using: parameters)
 
-        group.setReceiveHandler { _, content, _ in
-            if let content = content {
-                print("Received datagram: \(content)")
-            }
-        }
+		group.setReceiveHandler { _, content, _ in
+			if let content = content {
+				print("Received datagram: \(content)")
+			}
+		}
 
-        let groupReady = expectation(description: "NWConnectionGroup ready")
+		let groupReady = expectation(description: "NWConnectionGroup ready")
 		group.stateUpdateHandler = { newState in
-            print("Connection: \(newState)")
-            if newState == .ready {
-                groupReady.fulfill()
-            }
+			print("Connection: \(newState)")
+			if newState == .ready {
+				groupReady.fulfill()
+			}
 		}
 
 		group.start(queue: Self.queue)
 
-        wait(for: [groupReady], timeout: 1)
+		wait(for: [groupReady], timeout: 1)
 
-        // For some reason, this always fails, despite it being in the WWDC QUIC example:
-        // https://developer.apple.com/videos/play/wwdc2021/10094/?time=907
-        // let connection = NWConnection(from: group)!
+		// For some reason, this always fails, despite it being in the WWDC QUIC example:
+		// https://developer.apple.com/videos/play/wwdc2021/10094/?time=907
+		// let connection = NWConnection(from: group)!
 
 //		let connection = NWConnection(to: endpoint, using: parameters)
 //		connection.stateUpdateHandler = { newState in
@@ -93,18 +93,18 @@ class EchoTests: XCTestCase {
 
 		let payload = "Hello QUIC!"
 
-        let payloadSent = expectation(description: "payload sent")
-        group.send(content: payload.data(using: .utf8)!, to: endpoint) { error in
+		let payloadSent = expectation(description: "payload sent")
+		group.send(content: payload.data(using: .utf8)!, to: endpoint) { error in
 			if let error = error {
 				print("Error: group.send: \(error)")
-            } else {
-                print("Sent payload: \(payload)")
-                payloadSent.fulfill()
-            }
+			} else {
+				print("Sent payload: \(payload)")
+				payloadSent.fulfill()
+			}
 		}
 
-        wait(for: [payloadSent], timeout: 1)
+		wait(for: [payloadSent], timeout: 1)
 
-        sleep(1)
+		sleep(1)
 	}
 }
