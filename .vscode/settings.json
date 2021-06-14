@@ -1,0 +1,110 @@
+{
+	// Editor
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"editor.detectIndentation": false,
+	"editor.formatOnSave": true,
+	"editor.insertSpaces": false,
+	"editor.tabSize": 8,
+	"files.eol": "\n",
+
+	// Files
+	"files.exclude": {
+		"**/.git": true,
+		"**/build": true,
+		"**/vendor": true
+	},
+	"files.associations": {
+		"Brewfile": "ruby"
+	},
+	"files.insertFinalNewline": true,
+	"files.watcherExclude": {
+		"**/.git/objects/**": true,
+		"**/.git/subtree-cache/**": true,
+		"**/vendor/**": true
+	},
+	"files.trimTrailingWhitespace": true,
+
+	// Go
+	"[go]": {
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": true
+		},
+		"editor.snippetSuggestions": "none"
+	},
+	"[go.mod]": {
+		"editor.codeActionsOnSave": {
+			"source.fixAll": true,
+			"source.organizeImports": true
+		}
+	},
+	"go.useLanguageServer": true,
+	"gopls": {
+		"usePlaceholders": true
+	},
+
+	// JSON
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+
+	// Make
+	"[makefile]": {
+		"editor.tabSize": 8
+	},
+
+	// Markdown
+	"[markdown]": {
+		"editor.rulers": [80],
+		"editor.codeActionsOnSave": {
+			"source.fixAll.markdownlint": true
+		}
+	},
+	"markdown.preview.breaks": true,
+	"markdownlint.config": {
+		"default": true,
+		"MD022": false,
+		"MD024": false,
+		"MD032": false
+	},
+	//
+	// Protos
+	"[proto3]": {
+		"editor.defaultFormatter": "xaver.clang-format"
+	},
+
+	// Property Lists
+	"[plist]": {
+		"editor.formatOnSave": true,
+		"editor.tabSize": 8
+	},
+
+	// Shell
+	"[shellscript]": {
+		"editor.defaultFormatter": "foxundermoon.shell-format"
+	},
+
+	// Swift
+	"[swift]": {
+		"editor.detectIndentation": true,
+		"editor.insertSpaces": true,
+		"editor.tabSize": 4
+	},
+
+	// YAML
+	"[yaml]": {
+		"editor.autoIndent": "keep",
+		"editor.detectIndentation": true,
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2,
+		"editor.quickSuggestions": {
+			"other": true,
+			"comments": false,
+			"strings": true
+		}
+	}
+}
