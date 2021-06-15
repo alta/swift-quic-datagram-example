@@ -26,3 +26,6 @@ xcuserdata
 
 # Vendor dirs
 **/vendor/
+
+# QUIC
+*.qlog
