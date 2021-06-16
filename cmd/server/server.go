@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/alta/swift-quic-datagram-example/internal/insecure"
 	quic "github.com/lucas-clemente/quic-go"
@@ -17,16 +18,15 @@ import (
 
 func main() {
 	addr := flag.String("a", "localhost:4242", "address in host:port format")
-	enableQlog := flag.Bool("qlog", false, "output a qlog file")
 	flag.Parse()
 
-	err := serverMain(*addr, *enableQlog)
+	err := serverMain(*addr)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func serverMain(addr string, enableQlog bool) error {
+func serverMain(addr string) error {
 	cert, pool, err := insecure.LocalCertPool(addr)
 	if err != nil {
 		return err
@@ -42,14 +42,15 @@ func serverMain(addr string, enableQlog bool) error {
 		EnableDatagrams: true,
 	}
 
-	if enableQlog {
+	qlogDir := os.Getenv("QUIC_LOG_DIRECTORY")
+	if qlogDir != "" {
 		quicConfig.Tracer = qlog.NewTracer(func(_ logging.Perspective, connID []byte) io.WriteCloser {
-			filename := fmt.Sprintf("server_%x.qlog", connID)
-			f, err := os.Create(filename)
+			fn := filepath.Join(qlogDir, fmt.Sprintf("server-%x.qlog", connID))
+			f, err := os.Create(fn)
 			if err != nil {
 				log.Fatal(err)
 			}
-			log.Printf("Creating qlog file: %s", filename)
+			log.Printf("Created qlog file: %s", fn)
 			return f
 		})
 	}

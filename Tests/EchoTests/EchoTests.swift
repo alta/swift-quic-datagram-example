@@ -17,7 +17,7 @@ class EchoTests: XCTestCase {
 
 		server.currentDirectoryURL = directory
 		server.executableURL = URL(fileURLWithPath: "/bin/sh")
-		server.arguments = ["-c", "go run ./cmd/server -qlog -a \(host):\(port)"]
+		server.arguments = ["-c", "go run ./cmd/server -a \(host):\(port)"]
 		server.environment = ProcessInfo.processInfo.environment
 
 		do {
