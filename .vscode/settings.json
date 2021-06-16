@@ -18,7 +18,8 @@
 		"**/vendor": true
 	},
 	"files.associations": {
-		"Brewfile": "ruby"
+		"Brewfile": "ruby",
+		"*.qlog": "jsonc"
 	},
 	"files.insertFinalNewline": true,
 	"files.watcherExclude": {
