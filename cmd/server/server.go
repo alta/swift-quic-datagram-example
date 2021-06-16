@@ -67,7 +67,8 @@ func serverMain(addr string, enableQlog bool) error {
 			return err
 		}
 		go func(sess quic.Session) {
-			log.Printf("QUIC session started: %s", sess.RemoteAddr().String())
+			log.Printf("QUIC session started: %s %t",
+				sess.RemoteAddr().String(), sess.ConnectionState().SupportsDatagrams)
 			for {
 				buf, err := sess.ReceiveMessage()
 				if err != nil {
