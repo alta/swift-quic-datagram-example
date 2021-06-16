@@ -96,7 +96,7 @@ class EchoTests: XCTestCase {
 		let payload = "Hello QUIC!"
 
 		let payloadSent = expectation(description: "payload sent")
-		group.send(content: payload.data(using: .utf8)!, to: endpoint) { error in
+		group.send(content: payload.data(using: .utf8)!) { error in
 			if let error = error {
 				print("Error: group.send: \(error)")
 			} else {
