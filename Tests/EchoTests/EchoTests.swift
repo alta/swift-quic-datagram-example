@@ -37,8 +37,10 @@ class EchoTests: XCTestCase {
 
 	func testEcho() throws {
 		let endpoint: NWEndpoint = .hostPort(host: Self.host, port: Self.port)
-		let descriptor = try NWMultiplexGroup(to: endpoint)
+		let descriptor = NWMultiplexGroup(to: endpoint)
 		let options = NWProtocolQUIC.Options(alpn: ["echo"])
+
+//		options.maxUDPPayloadSize = 1220
 
 		let allowInsecure = true
 		sec_protocol_options_set_verify_block(options.securityProtocolOptions, { _, sec_trust, sec_protocol_verify_complete in
@@ -59,7 +61,8 @@ class EchoTests: XCTestCase {
 		let group = NWConnectionGroup(with: descriptor, using: parameters)
 
 		let payloadReceived = expectation(description: "payload received")
-		group.setReceiveHandler { _, content, _ in
+        group.setReceiveHandler(maximumMessageSize: 1220, rejectOversizedMessages: true) { _, content, _ in
+//		group.setReceiveHandler { _, content, _ in
 			if let content = content {
 				print("Received datagram: \(content)")
 				payloadReceived.fulfill()
@@ -76,22 +79,22 @@ class EchoTests: XCTestCase {
 
 		group.start(queue: Self.queue)
 
+        if let metadata = group.metadata(definition: NWProtocolQUIC.definition) as? NWProtocolQUIC.Metadata {
+            // Do something with metadata here
+        }
+
 		wait(for: [groupReady], timeout: 1)
 
-		// For some reason, this always fails, despite it being in the WWDC QUIC example:
-		// https://developer.apple.com/videos/play/wwdc2021/10094/?time=907
 		// let connection = NWConnection(from: group)!
-
-//		let connection = NWConnection(to: endpoint, using: parameters)
-//		connection.stateUpdateHandler = { newState in
-//			switch newState {
-//			case .ready:
-//				print("Connected using QUIC!")
-//			default:
-//				print("stateUpdateHandler: \(newState)")
-//			}
-//		}
-//		connection.start(queue: Self.queue)
+		// connection.stateUpdateHandler = { newState in
+		// 	switch newState {
+		// 	case .ready:
+		// 		print("New QUIC stream connected!")
+		// 	default:
+		// 		print("stateUpdateHandler: \(newState)")
+		// 	}
+		// }
+		// connection.start(queue: Self.queue)
 
 		let payload = "Hello QUIC!"
 
