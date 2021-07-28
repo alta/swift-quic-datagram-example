@@ -73,7 +73,7 @@ func serverMain(addr string) error {
 			for {
 				buf, err := sess.ReceiveMessage()
 				if err != nil {
-					log.Printf("Error: ReceiveMessage: %s\n", string(buf))
+					log.Printf("Error: ReceiveMessage: %v\n", err)
 					break
 				}
 				log.Printf("ReceiveMessage: %s\n", string(buf))
