@@ -27,15 +27,15 @@ func main() {
 }
 
 func serverMain(addr string) error {
-	cert, pool, err := insecure.LocalCertPool(addr)
+	cert, _, err := insecure.LocalCertPool(addr)
 	if err != nil {
 		return err
 	}
 
 	tlsConfig := &tls.Config{
 		Certificates: []tls.Certificate{cert},
-		RootCAs:      pool,
-		NextProtos:   []string{"echo"},
+		// RootCAs:      pool,
+		NextProtos: []string{"echo"},
 	}
 
 	quicConfig := &quic.Config{
