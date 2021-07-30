@@ -61,7 +61,7 @@ class EchoTests: XCTestCase {
 		let group = NWConnectionGroup(with: descriptor, using: parameters)
 
 		let payloadReceived = expectation(description: "payload received")
-        group.setReceiveHandler(maximumMessageSize: 1220, rejectOversizedMessages: true) { _, content, _ in
+		group.setReceiveHandler(maximumMessageSize: 1220, rejectOversizedMessages: true) { _, content, _ in
 //		group.setReceiveHandler { _, content, _ in
 			if let content = content {
 				print("Received datagram: \(content)")
@@ -79,9 +79,9 @@ class EchoTests: XCTestCase {
 
 		group.start(queue: Self.queue)
 
-        if let metadata = group.metadata(definition: NWProtocolQUIC.definition) as? NWProtocolQUIC.Metadata {
-            // Do something with metadata here
-        }
+		if let metadata = group.metadata(definition: NWProtocolQUIC.definition) as? NWProtocolQUIC.Metadata {
+			// Do something with metadata here
+		}
 
 		wait(for: [groupReady], timeout: 1)
 
