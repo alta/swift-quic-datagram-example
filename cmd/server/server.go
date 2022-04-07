@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/alta/swift-quic-datagram-example/internal/insecure"
 	quic "github.com/lucas-clemente/quic-go"
@@ -63,27 +64,33 @@ func serverMain(addr string) error {
 	log.Printf("Server listening at: %s", addr)
 
 	for {
-		sess, err := listener.Accept(context.Background())
+		conn, err := listener.Accept(context.Background())
 		if err != nil {
 			return err
 		}
-		go func(sess quic.Session) {
-			log.Printf("QUIC session started: %s %t",
-				sess.RemoteAddr().String(), sess.ConnectionState().SupportsDatagrams)
+		go func(conn quic.Connection) {
+			log.Printf("QUIC connection started: %s %t",
+				conn.RemoteAddr().String(), conn.ConnectionState().SupportsDatagrams)
+			time.Sleep(1 * time.Second)
+			err := conn.SendMessage([]byte{})
+			if err != nil {
+				log.Printf("Error: SendMessage: %v", err)
+				return
+			}
 			for {
-				buf, err := sess.ReceiveMessage()
+				buf, err := conn.ReceiveMessage()
 				if err != nil {
 					log.Printf("Error: ReceiveMessage: %v\n", err)
 					break
 				}
 				log.Printf("ReceiveMessage: %s\n", string(buf))
-				err = sess.SendMessage(buf)
+				err = conn.SendMessage(buf)
 				if err != nil {
 					log.Printf("Error: SendMessage: %v", err)
 					break
 				}
 				log.Printf("SendMessage: %s\n", string(buf))
 			}
-		}(sess)
+		}(conn)
 	}
 }
