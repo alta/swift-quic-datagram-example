@@ -40,7 +40,8 @@ class EchoTests: XCTestCase {
 		let descriptor = NWMultiplexGroup(to: endpoint)
 		let options = NWProtocolQUIC.Options(alpn: ["echo"])
 
-//		options.maxUDPPayloadSize = 1220
+		options.isDatagram = true
+		options.maxDatagramFrameSize = 1220
 
 		let allowInsecure = true
 		sec_protocol_options_set_verify_block(options.securityProtocolOptions, { _, sec_trust, sec_protocol_verify_complete in
@@ -61,8 +62,8 @@ class EchoTests: XCTestCase {
 		let group = NWConnectionGroup(with: descriptor, using: parameters)
 
 		let payloadReceived = expectation(description: "payload received")
-		group.setReceiveHandler(maximumMessageSize: 1220, rejectOversizedMessages: true) { _, content, _ in
-//		group.setReceiveHandler { _, content, _ in
+		// group.setReceiveHandler(maximumMessageSize: 1220, rejectOversizedMessages: true) { _, content, _ in
+		group.setReceiveHandler { _, content, _ in
 			if let content = content {
 				print("Received datagram: \(content)")
 				payloadReceived.fulfill()
