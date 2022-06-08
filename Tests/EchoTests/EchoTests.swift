@@ -86,16 +86,16 @@ class EchoTests: XCTestCase {
 
 		wait(for: [groupReady], timeout: 1)
 
-		// let connection = NWConnection(from: group)!
-		// connection.stateUpdateHandler = { newState in
-		// 	switch newState {
-		// 	case .ready:
-		// 		print("New QUIC stream connected!")
-		// 	default:
-		// 		print("stateUpdateHandler: \(newState)")
-		// 	}
-		// }
-		// connection.start(queue: Self.queue)
+		let connection = NWConnection(from: group)!
+		connection.stateUpdateHandler = { newState in
+			switch newState {
+			case .ready:
+				print("New QUIC stream connected!")
+			default:
+				print("stateUpdateHandler: \(newState)")
+			}
+		}
+		connection.start(queue: Self.queue)
 
 		let payload = "Hello QUIC!"
 
