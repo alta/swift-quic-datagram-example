@@ -65,7 +65,8 @@ class EchoTests: XCTestCase {
 		// group.setReceiveHandler(maximumMessageSize: 1220, rejectOversizedMessages: true) { _, content, _ in
 		group.setReceiveHandler { _, content, _ in
 			if let content = content {
-				print("Received datagram: \(content)")
+				let str = String(decoding: content, as: UTF8.self)
+				print("Received datagram: \(str)")
 				payloadReceived.fulfill()
 			}
 		}
@@ -111,6 +112,6 @@ class EchoTests: XCTestCase {
 
 		wait(for: [payloadSent], timeout: 1)
 
-		wait(for: [payloadReceived], timeout: 1)
+		wait(for: [payloadReceived], timeout: 2)
 	}
 }
