@@ -44,21 +44,13 @@ class EchoTests: XCTestCase {
 		options.maxDatagramFrameSize = 1220
 
 		let allowInsecure = true
-		sec_protocol_options_set_verify_block(
-			options.securityProtocolOptions,
-			{ _, sec_trust, sec_protocol_verify_complete in
-				let trust = sec_trust_copy_ref(sec_trust).takeRetainedValue()
-				var error: CFError?
-				if SecTrustEvaluateWithError(trust, &error) {
-					sec_protocol_verify_complete(true)
-				} else {
-					if allowInsecure == true {
-						sec_protocol_verify_complete(true)
-					} else {
-						sec_protocol_verify_complete(false)
-					}
-				}
-			}, Self.queue)
+		if allowInsecure {
+			sec_protocol_options_set_verify_block(
+				options.securityProtocolOptions,
+				{ _, _, complete in
+					complete(true)
+				}, Self.queue)
+		}
 
 		let parameters = NWParameters(quic: options)
 		let group = NWConnectionGroup(with: descriptor, using: parameters)
