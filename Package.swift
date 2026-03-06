@@ -12,7 +12,7 @@ let package = Package(
 		.library(
 			name: "Echo",
 			targets: ["Echo"]
-		),
+		)
 	],
 	dependencies: [
 		// Dependencies declare other packages that this package depends on.
