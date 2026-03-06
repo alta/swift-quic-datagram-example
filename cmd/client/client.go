@@ -1,12 +1,13 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"flag"
 	"log"
 
 	"github.com/alta/swift-quic-datagram-example/internal/insecure"
-	quic "github.com/lucas-clemente/quic-go"
+	quic "github.com/quic-go/quic-go"
 )
 
 func main() {
@@ -39,19 +40,20 @@ func clientMain(addr, message string) error {
 		EnableDatagrams: true,
 	}
 
-	sess, err := quic.DialAddr(addr, tlsConfig, quicConfig)
+	ctx := context.Background()
+	sess, err := quic.DialAddr(ctx, addr, tlsConfig, quicConfig)
 	if err != nil {
 		return err
 	}
 
-	log.Printf("SendMessage: %v\n", message)
+	log.Printf("SendDatagram: %v\n", message)
 
-	err = sess.SendMessage([]byte(message))
+	err = sess.SendDatagram([]byte(message))
 	if err != nil {
 		return err
 	}
 
-	buf, err := sess.ReceiveMessage()
+	buf, err := sess.ReceiveDatagram(ctx)
 	if err != nil {
 		return err
 	}

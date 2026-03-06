@@ -1,7 +1,7 @@
 {
 	// Editor
 	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
+		"source.fixAll.eslint": "explicit"
 	},
 	"editor.detectIndentation": false,
 	"editor.formatOnSave": true,
@@ -32,14 +32,14 @@
 	// Go
 	"[go]": {
 		"editor.codeActionsOnSave": {
-			"source.organizeImports": true
+			"source.organizeImports": "explicit"
 		},
 		"editor.snippetSuggestions": "none"
 	},
 	"[go.mod]": {
 		"editor.codeActionsOnSave": {
-			"source.fixAll": true,
-			"source.organizeImports": true
+			"source.fixAll": "explicit",
+			"source.organizeImports": "explicit"
 		}
 	},
 	"go.useLanguageServer": true,
@@ -64,7 +64,7 @@
 	"[markdown]": {
 		"editor.rulers": [80],
 		"editor.codeActionsOnSave": {
-			"source.fixAll.markdownlint": true
+			"source.fixAll.markdownlint": "explicit"
 		}
 	},
 	"markdown.preview.breaks": true,
