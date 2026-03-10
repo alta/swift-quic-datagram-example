@@ -1,3 +1,5 @@
+import CommonCrypto
+// import CryptoKit
 import Network
 import XCTest
 
@@ -47,7 +49,32 @@ class EchoTests: XCTestCase {
 		if allowInsecure {
 			sec_protocol_options_set_verify_block(
 				options.securityProtocolOptions,
-				{ _, _, complete in
+				{ _, trustRef, complete in
+					let serverTrust: SecTrust = sec_trust_copy_ref(trustRef).takeRetainedValue()
+					let certs = SecTrustCopyCertificateChain(serverTrust) as! [SecCertificate]
+					let certificateCount = certs.count
+					print("Number of certificates: \(certificateCount)")
+
+					// let certs = SecTrustCopyCertificateChain(serverTrust)
+
+					// https://medium.com/@gauravharkhani01/ssl-pinning-implementation-in-ios-a-beginners-guide-589d4efcdf42
+					for (i, cert) in certs.enumerated() {
+						guard let publicKey = SecCertificateCopyKey(cert)
+						else {
+							continue
+						}
+						print("Certificate \(i): \(cert)")
+
+						if let keyData = SecKeyCopyExternalRepresentation(publicKey, nil) as? Data {
+							let keyHash = sha256(keyData)
+							print("Public key \(i): \(keyHash)")
+							// if pinnedPublicKeyHashes.contains(keyHash) {
+							// 	publicKeyFound = true
+							// 	break
+							// }
+						}
+					}
+
 					complete(true)
 				}, Self.queue)
 		}
@@ -108,4 +135,12 @@ class EchoTests: XCTestCase {
 
 		wait(for: [payloadReceived], timeout: 2)
 	}
+}
+
+private func sha256(_ data: Data) -> String {
+	var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+	data.withUnsafeBytes {
+		_ = CC_SHA256($0.baseAddress, CC_LONG(data.count), &hash)
+	}
+	return Data(hash).base64EncodedString()
 }
