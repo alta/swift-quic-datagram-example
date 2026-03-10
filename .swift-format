@@ -2,7 +2,7 @@
 	"indentation": {
 		"tabs": 1
 	},
-	"lineLength": 120,
+	"lineLength": 160,
 	"maximumBlankLines": 1,
 	"spacesBeforeEndOfLineComments": 1,
 	"version": 1
